@@ -37,7 +37,7 @@ public class ColourGenerator{
   *a jump of 4 will colour a 4 X 4 square of pixels each itteration.
   */
   public static Color[][] perlinNoise(int width, int height, int jump){
-    Color colours[][]
+    Color colours[][] = null;
     return colours;
   }
 }

@@ -5,8 +5,8 @@ public class Driver{
     int width = 2048;
     int height = 2048;
     ImageHandler imageHandler = new ImageHandler(width, height);
-    Color colours[][] = ColourGenerator.randomRGB(width, height, 8);
-    
+    Color colours[][] = ColourGenerator.randomRGB(width, height, 4);
+
     imageHandler.colourPixels(colours);
     imageHandler.save("jpg", "output");
 
