@@ -36,8 +36,22 @@ public class ColourGenerator{
   *@param jump: How many pixels will be coloured for each itteration. For example,
   *a jump of 4 will colour a 4 X 4 square of pixels each itteration.
   */
-  public static Color[][] perlinNoise(int width, int height, int jump){
-    Color colours[][] = null;
+  public static Color[][] perlin(int width, int height, int jump){
+    Color colours[][] = new Color[width][height];
+    for(int x = 0; x < width; x+=jump){
+      for(int y = 0; y < height; y+=jump){
+
+        double r = 255 *PerlinNoise.noise(x+0.5,y+0.5);
+        double g = 255 *PerlinNoise.noise(x +0.7,y +0.7);
+        double b = 255 *PerlinNoise.noise(x +0.7,y +0.7);
+
+        for(int i = 0; i < jump; i ++){
+          for(int j = 0; j < jump; j ++){
+            colours[x+i][y+j] = new Color((int)r,(int)g,(int)b);
+          }
+        }
+      }
+    }
     return colours;
   }
 }
