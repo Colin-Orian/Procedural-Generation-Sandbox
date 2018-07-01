@@ -56,7 +56,25 @@ public class PerlinNoise{
    private static double grad(int hash, double x, double y){
      return ((hash & 1) == 1 ? x : -x) + ((hash & 2) == 2 ? y : -y);
    }
-
+   /*Adds multiple noise functions together to create a more natural looking noise
+   *@param x: an X co-ordinate on a 2d grid
+   *@param y: an y co-ordinate on a 2d grid
+   *@param octaves: How many noise functions should be added together
+   *@param persistence: Increases the height of the noise function
+   */
+   public static  double octavePerlin(double x, double y, int octaves, double persistence){
+     double total = 0;
+     double frequency = 1;
+     double amplitude = 1;
+     double maxValue = 0; //Bounds the result from 0.0 to 1
+     for(int i = 0; i < octaves; i ++){
+       total += noise(x * frequency, y * frequency) * amplitude;
+       maxValue += amplitude;
+       amplitude *= persistence;
+       frequency *= 2;
+     }
+     return total / maxValue;
+   }
    /*Computes the noise at given [x,y] co-ordinate
    *@param x: an X co-ordinate on a 2d grid
    *@param y; an Y co-ordinate on a 2d grid
