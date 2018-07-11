@@ -33,6 +33,7 @@ public class BSPTree{
     */
     public void popTree(int iter){
       splitNode(root, iter);
+      root.genPath();
     }
     /*Creates a left and right child for the parent node. Gives a rectangle to
     * the children
@@ -40,7 +41,9 @@ public class BSPTree{
     * @param iter: The current itteration
     */
     private void splitNode(Node parent, int iter){
+      //A node will only have a room if it's a leaf of the tree
       if(iter == 0){
+        parent.genRoom(random);
         return;
       }
       Rectangle[] rectangles = genRectangle(parent.getRectangle());
@@ -50,8 +53,10 @@ public class BSPTree{
       temp = new Node(rectangles[1]);
       parent.setRightChild(temp);
 
+
       splitNode(parent.getLeftChild(), iter-1);
       splitNode(parent.getRightChild(), iter-1);
+      parent.genPath();
     }
 
     /*Generates two rectangles that are created by spliting the parent rectangle
@@ -126,8 +131,44 @@ public class BSPTree{
         drawTree(graphics, node.getRightChild());
       }
     }
+
+    public void drawRooms(Graphics2D graphics){
+      graphics.setColor(new Color(30, 144, 255));
+      drawRooms(graphics, root);
+
+    }
+
+    public void drawRooms(Graphics2D graphics, Node node){
+      if(null == node.getLeftChild()){
+        node.drawRoom(graphics);
+      }
+
+      if(null != node.getLeftChild()){
+        drawRooms(graphics, node.getLeftChild());
+      }
+      if(null != node.getRightChild()){
+        drawRooms(graphics, node.getRightChild());
+      }
+
+    }
+    public void drawPath(Graphics2D graphics){
+      graphics.setColor(new Color(30, 144, 255));
+      drawPath(graphics, root);
+    }
+    public void drawPath(Graphics2D graphics, Node node){
+      if(null != node.getLeftChild()){
+        drawPath(graphics, node.getLeftChild());
+      }
+      if(null != node.getRightChild()){
+        drawPath(graphics, node.getRightChild());
+        node.drawPath(graphics);
+      }
+
+    }
+
     //Returns a random number between min (inclusive) and max (exclusive)
     private int random(double min, double max){
       return (int)Math.floor(random.nextDouble() * (max - min + 1) + min);
     }
+
 }

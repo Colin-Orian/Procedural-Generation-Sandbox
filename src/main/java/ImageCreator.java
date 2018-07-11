@@ -94,6 +94,8 @@ public void grid(int gridsAcross, int gridsDown){
     BSPTree tree = new BSPTree(this.WIDTH, this.HEIGHT, seed);
     tree.popTree(iter);
     tree.drawTree(graphics);
+    tree.drawRooms(graphics);
+    tree.drawPath(graphics);
   }
 
   public void drawBSP(int iter){
@@ -101,6 +103,8 @@ public void grid(int gridsAcross, int gridsDown){
     BSPTree tree = new BSPTree(this.WIDTH, this.HEIGHT);
     tree.popTree(iter);
     tree.drawTree(graphics);
+    tree.drawRooms(graphics);
+    tree.drawPath(graphics);
 
   }
 
