@@ -2,29 +2,39 @@ import java.util.Random;
 import java.awt.Graphics2D;
 import java.awt.Color;
 /*An implementation of a Binary Spacing Partitioning (BSP) Tree.This will split
-*an area randomly and repeat the process recursively on the resulting rectangles
-* Source: https://eskerda.com/bsp-dungeon-generation/
+* an area randomly and repeat the process recursively on the resulting rectangles
+* Adapted from: https://eskerda.com/bsp-dungeon-generation/
 */
 public class BSPTree{
     private Node root;
     private Random random;
-    private final double WIDTH_HEIGHT_RATIO =  0.45;
+    private final double BOUND =  0.30;
+
+    private int gridWidth;
+    private int gridHeight;
     /*
-    *@param width: The width of the largest rectangle
-    *@param height: The height of the largest rectangle
-    *@param seed: The seed that the random number generator will use
+    * @param width: The width of the largest rectangle
+    * @param height: The height of the largest rectangle
+    * @param seed: The seed that the random number generator will use
     */
     public BSPTree(int width, int height, long seed){
       random = new Random(seed);
       root = new Node(new Rectangle(0,0, width, height));
     }
-    /* Populates the tree with rectangles
-    * @param iter: the number of itterations
+    public BSPTree(int width, int height){
+      random = new Random();
+      root = new Node(new Rectangle(0,0, width, height));
+    }
+
+
+    /*Populates the tree with rectangles
+    * @param iter: the number of iterations.
+    *              The number of rooms will be 2^iter
     */
     public void popTree(int iter){
       splitNode(root, iter);
     }
-    /* Creates a left and right child for the parent node. Gives a rectangle to
+    /*Creates a left and right child for the parent node. Gives a rectangle to
     * the children
     * @param parent: The parent node
     * @param iter: The current itteration
@@ -44,29 +54,32 @@ public class BSPTree{
       splitNode(parent.getRightChild(), iter-1);
     }
 
-    /* Generates two rectangles that are created by spliting the parent rectangle
-    *@param parent: The parent rectangle
-    *@return: An array of 2 rectangles. One for each child node
+    /*Generates two rectangles that are created by spliting the parent rectangle
+    * @param parent: The parent rectangle
+    * @return: An array of 2 rectangles. One for each child node
     */
     private Rectangle[] genRectangle(Rectangle parent){
       Rectangle[] rectangles = new Rectangle[2];
-      //Determines if the parent is split horziontally or vertically
-      if(random(0,1) == 0){
-        /*How much you want to split the parent rectangle. The original
-        * implementation recursively called genRectangle() again if the ratio
-        * wasn't satisfied. I didn't feel comfortable with that so I changed it.
-        *The min value comes from: width > ratio * height
-        */
-        int splitWidth = random(parent.getHeight() * this.WIDTH_HEIGHT_RATIO,
-                                parent.getWidth());
 
-        /* If you're spliting vertically,the first child rectangle
-        *will have the same x,y co-ords and height as the parent. It will have a
-        *random width between the ratio and the parent's width
+      /*Determines if the parent is split horziontally or vertically
+      *By having it alterinate between horizontal and vertical, it prevents vertically
+      *long and narrow rectangles
+      */
+      if(parent.getWidth() > parent.getHeight()){
+        /*How much you want to split the parent rectangle. As BOUND aproaches 0.5,
+        * the farther the split can be away from the middle of the parent
+        */
+        double splitRatio = parent.getWidth() * this.BOUND;
+        int splitWidth = random(parent.getWidth() /2 -splitRatio,
+                                parent.getWidth() /2 + splitRatio);
+
+        /*If you're spliting vertically,the first child rectangle
+        * will have the same x,y co-ords and height as the parent. It will have a
+        * random width between the ratio and the parent's width
         */
         rectangles[0] = new Rectangle(parent.getX(), parent.getY(),
                                       splitWidth, parent.getHeight());
-        /* The second child rectangle will have the same height and y co-ords as
+        /*The second child rectangle will have the same height and y co-ords as
         * the parent. It will have the same x co-ords as the parent PLUS the split
         * width. The width will be the remaining width of the parent
         */
@@ -75,9 +88,9 @@ public class BSPTree{
                                       parent.getHeight());
       }else{
         //How much you want to split the parent rectangle
-        //The min value comes from: height > ratio / width
-        int splitHeight = random(this.WIDTH_HEIGHT_RATIO/parent.getWidth(),
-                                 parent.getHeight());
+        double splitRatio = parent.getHeight() * this.BOUND;
+        int splitHeight = random(parent.getHeight() /2 -splitRatio,
+                                 parent.getHeight() /2 + splitRatio);
 
         /*Uses the same concept as spliting vertically but changes height and y
         * co-ords instead of width and x co-ords
@@ -93,7 +106,7 @@ public class BSPTree{
     }
 
     /*Draws the rectangles onto a graphics instance
-    *@param graphics: What you want the rectangles to be drawn on
+    * @param graphics: What you want the rectangles to be drawn on
     */
     public void drawTree(Graphics2D graphics){
       graphics.setColor(new Color(148, 0, 211));
@@ -114,7 +127,7 @@ public class BSPTree{
       }
     }
     //Returns a random number between min (inclusive) and max (exclusive)
-    private int random(double min, int max){
+    private int random(double min, double max){
       return (int)Math.floor(random.nextDouble() * (max - min + 1) + min);
     }
 }

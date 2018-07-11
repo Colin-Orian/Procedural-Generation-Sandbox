@@ -96,5 +96,13 @@ public void grid(int gridsAcross, int gridsDown){
     tree.drawTree(graphics);
   }
 
+  public void drawBSP(int iter){
+    graphics.setStroke(new BasicStroke(5));
+    BSPTree tree = new BSPTree(this.WIDTH, this.HEIGHT);
+    tree.popTree(iter);
+    tree.drawTree(graphics);
+
+  }
+
   public BufferedImage getBufferedImage(){return image;}
 }
