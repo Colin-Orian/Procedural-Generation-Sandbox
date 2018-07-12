@@ -45,6 +45,7 @@ public class BSPTree{
         parent.genRoom(random);
         return;
       }
+      //Creates two rectangles, one for each child
       Rectangle[] rectangles = genRectangle(parent.getRectangle());
       Node temp = new Node(rectangles[0]);
       parent.setLeftChild(temp);
@@ -55,6 +56,7 @@ public class BSPTree{
 
       splitNode(parent.getLeftChild(), iter-1);
       splitNode(parent.getRightChild(), iter-1);
+      //Generates a path between the two children
       parent.genPath();
     }
 
@@ -131,13 +133,20 @@ public class BSPTree{
       }
     }
 
+    /*Recursively draws the room for each node onto a graphics instance
+    * @param graphics: What you want the rectangles to be drawn on
+    */
     public void drawRooms(Graphics2D graphics){
       graphics.setColor(new Color(30, 144, 255));
       drawRooms(graphics, root);
 
     }
 
-    public void drawRooms(Graphics2D graphics, Node node){
+    /*Recursively draws the room for each node onto a graphics instance
+    * @param graphics: What you want the rectangles to be drawn on
+    * @param node: The current node
+    */
+    private void drawRooms(Graphics2D graphics, Node node){
       if(null == node.getLeftChild()){
         node.drawRoom(graphics);
       }
@@ -148,13 +157,21 @@ public class BSPTree{
       if(null != node.getRightChild()){
         drawRooms(graphics, node.getRightChild());
       }
-
     }
+
+    /*Recursively draws the path for each node onto a graphics instance
+    * @param graphics: What you want the rectangles to be drawn on
+    */
     public void drawPath(Graphics2D graphics){
       graphics.setColor(new Color(124, 252, 0));
       drawPath(graphics, root);
     }
-    public void drawPath(Graphics2D graphics, Node node){
+
+    /*Recursively draws the path for each node onto a graphics instance
+    * @param graphics: What you want the rectangles to be drawn on
+    * @param node: The current node
+    */
+    private void drawPath(Graphics2D graphics, Node node){
       if(null != node.getLeftChild()){
         drawPath(graphics, node.getLeftChild());
       }

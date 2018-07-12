@@ -17,32 +17,51 @@ public class Node{
     rightChild = null;
 
   }
+  /*Generates a room
+  *@param random: The desired Random Number Generator
+  */
   public void genRoom(Random random){
     room = new Room(rectangle, random);
   }
+
+  /*Draws a room onto a graphics instance
+  *@param graphics: The graphics instance to draw on
+  */
   public void drawRoom(Graphics2D graphics){
     room.drawRoom(graphics);
   }
+  //Generates a path between the two children
   public void genPath(){
     Rectangle leftRect = leftChild.getRectangle();
     Rectangle rightRect = rightChild.getRectangle();
+    //If the parent rectangle's width is greater than its height, then the children
+    //are split vertically
     if(rectangle.getWidth() >= rectangle.getHeight()){
-      //width is the distance between pts
+      //Path starts at the center of the left child, has the width of the distance
+      //Between children and an arbitraty height
       path = new Rectangle(leftRect.getCenterX(), leftRect.getCenterY(),
-                            Math.abs(rightRect.getCenterX() - leftRect.getCenterX()), 10);
+                          Math.abs(rightRect.getCenterX() - leftRect.getCenterX()), 10);
     }else{
+      //Same as above but with height
       path = new Rectangle(leftRect.getCenterX(), leftRect.getCenterY(),
-                           10, Math.abs(rightRect.getCenterY() - leftRect.getCenterY()));
+                           10,Math.abs(rightRect.getCenterY() - leftRect.getCenterY()));
 
     }
   }
+  /*Draws the path onto a graphics instance
+  *@param graphics: The graphics instance to draw on
+  */
   public void drawPath(Graphics2D graphics){
     Rectangle leftRect = leftChild.getRectangle();
     Rectangle rightRect = rightChild.getRectangle();
     if(rectangle.getWidth() >= rectangle.getHeight()){
-      graphics.drawLine(path.getX(), path.getY(), path.getX() + path.getWidth(), path.getY());
+      //The starting xy will be the path's xy values. The ending values will be
+      //path's x value plus width and will have the same y value.
+      graphics.drawLine(path.getX(), path.getY(), path.getX() + path.getWidth(),
+                        path.getY());
     }else{
-      graphics.drawLine(path.getX(), path.getY(), path.getX(), path.getHeight() + path.getY());
+      graphics.drawLine(path.getX(), path.getY(), path.getX(), path.getHeight()
+                        + path.getY());
     }
   }
 
