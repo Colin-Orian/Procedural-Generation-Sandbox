@@ -33,7 +33,6 @@ public class BSPTree{
     */
     public void popTree(int iter){
       splitNode(root, iter);
-      root.genPath();
     }
     /*Creates a left and right child for the parent node. Gives a rectangle to
     * the children

@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.awt.Graphics2D;
+import java.lang.Math;
 //A class to represent a node for a Binary Space Partitioning(BSP) Tree
 public class Node{
   private Rectangle rectangle;
@@ -23,22 +24,26 @@ public class Node{
     room.drawRoom(graphics);
   }
   public void genPath(){
+    Rectangle leftRect = leftChild.getRectangle();
+    Rectangle rightRect = rightChild.getRectangle();
     if(rectangle.getWidth() >= rectangle.getHeight()){
       //width is the distance between pts
-      path = new Rectangle(leftChild.getCenterX(), leftChild.getCenterY(),
-                            rightChild.getCenterX(), 20);
+      path = new Rectangle(leftRect.getCenterX(), leftRect.getCenterY(),
+                            Math.abs(rightRect.getCenterX() - leftRect.getCenterX()), 10);
     }else{
-      path = new Rectangle(leftChild.getCenterX(), leftChild.getCenterY(),
-                           20, rightChild.getCenterY());
+      path = new Rectangle(leftRect.getCenterX(), leftRect.getCenterY(),
+                           10, Math.abs(rightRect.getCenterY() - leftRect.getCenterY()));
 
     }
   }
   public void drawPath(Graphics2D graphics){
     Rectangle leftRect = leftChild.getRectangle();
     Rectangle rightRect = rightChild.getRectangle();
-
-    graphics.drawLine(leftRect.getCenterX(), leftRect.getCenterY(),
-                      rightRect.getCenterX(),rightRect.getCenterY());
+    if(rectangle.getWidth() >= rectangle.getHeight()){
+      graphics.drawLine(path.getX(), path.getY(), path.getX() + path.getWidth(), path.getY());
+    }else{
+      graphics.drawLine(path.getX(), path.getY(), path.getX(), path.getHeight() + path.getY());
+    }
   }
 
   public Node getLeftChild(){return leftChild;}
