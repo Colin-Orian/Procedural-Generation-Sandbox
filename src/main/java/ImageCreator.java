@@ -103,8 +103,11 @@ public void grid(int gridsAcross, int gridsDown){
     BSPTree tree = new BSPTree(this.WIDTH, this.HEIGHT);
     tree.popTree(iter);
     tree.drawTree(graphics);
+    ImageSaver.save(getBufferedImage(), "png", "split");
     tree.drawRooms(graphics);
+    ImageSaver.save(getBufferedImage(), "png", "rooms");
     tree.drawPath(graphics);
+    ImageSaver.save(getBufferedImage(), "png", "path");
 
   }
 

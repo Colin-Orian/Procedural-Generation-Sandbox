@@ -70,7 +70,7 @@ public class BSPTree{
       *By having it alterinate between horizontal and vertical, it prevents vertically
       *long and narrow rectangles
       */
-      if(parent.getWidth() > parent.getHeight()){
+      if(parent.getWidth() >= parent.getHeight()){
         /*How much you want to split the parent rectangle. As BOUND aproaches 0.5,
         * the farther the split can be away from the middle of the parent
         */
@@ -152,7 +152,7 @@ public class BSPTree{
 
     }
     public void drawPath(Graphics2D graphics){
-      graphics.setColor(new Color(30, 144, 255));
+      graphics.setColor(new Color(124, 252, 0));
       drawPath(graphics, root);
     }
     public void drawPath(Graphics2D graphics, Node node){

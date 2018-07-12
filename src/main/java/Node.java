@@ -23,8 +23,22 @@ public class Node{
     room.drawRoom(graphics);
   }
   public void genPath(){
+    if(rectangle.getWidth() >= rectangle.getHeight()){
+      //width is the distance between pts
+      path = new Rectangle(leftChild.getCenterX(), leftChild.getCenterY(),
+                            rightChild.getCenterX(), 20);
+    }else{
+      path = new Rectangle(leftChild.getCenterX(), leftChild.getCenterY(),
+                           20, rightChild.getCenterY());
+
+    }
   }
   public void drawPath(Graphics2D graphics){
+    Rectangle leftRect = leftChild.getRectangle();
+    Rectangle rightRect = rightChild.getRectangle();
+
+    graphics.drawLine(leftRect.getCenterX(), leftRect.getCenterY(),
+                      rightRect.getCenterX(),rightRect.getCenterY());
   }
 
   public Node getLeftChild(){return leftChild;}

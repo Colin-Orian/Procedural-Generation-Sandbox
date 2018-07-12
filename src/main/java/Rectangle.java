@@ -12,8 +12,8 @@ public class Rectangle{
     this.y = y;
     this.width = width;
     this.height = height;
-    centerX = this.x /2;
-    centerY = this.y /2;
+    centerX = this.x  + (this.width/2);
+    centerY = this.y +  (this.height/2);
   }
 
   public int getX(){return x;}
